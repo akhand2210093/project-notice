@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 import os
 import cloudinary
 import cloudinary.uploader
@@ -7,9 +8,10 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-dkt!fyc6_nrp*@c5b(btdpd#w#6a8n%2r@71d+)5kb-u4thu8*'
 
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', cast=bool)
+
 
 ALLOWED_HOSTS = ["*"]
 
@@ -112,20 +114,21 @@ SIMPLE_JWT = {
 }
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dtxbw9c1g',
-    'API_KEY': '816418654667649',
-    'API_SECRET': '8ya_7Iynbltv7GbWas4Rr7tQ304'
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET')
 }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 cloudinary.config(
-    cloud_name='dtxbw9c1g',
-    api_key='816418654667649',
-    api_secret='8ya_7Iynbltv7GbWas4Rr7tQ304'
+    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key=CLOUDINARY_STORAGE['API_KEY'],
+    api_secret=CLOUDINARY_STORAGE['API_SECRET']
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'cloudcomputingcell2@gmail.com'
-EMAIL_HOST_PASSWORD = 'qojn iuaa lrqb zdtm'
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
