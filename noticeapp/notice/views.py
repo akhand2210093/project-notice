@@ -54,20 +54,25 @@ class DocumentUpdateAPIView(views.APIView):
     def put(self, request, pk):
         if request.user.role == 'staff' or request.user.role == 'administrator':
             document = self.get_object(pk)
-            request.data['editor'] = request.user.id
-            serializer = DocumentSerializer(document, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if request.user.username == document.editor.username :
+                serializer = DocumentSerializer(document, data=request.data, partial = True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'msg':'Access denied'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'msg':'user do not have permission.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg':'Student user do not have permission.'}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
         if request.user.role == 'staff' or request.user.role == 'administrator':
             document = self.get_object(pk)
-            document.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            if request.user.username == document.editor.username :
+                document.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'msg':'Access denied'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'msg':'user do not have permission.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg':'Student user do not have permission.'}, status=status.HTTP_400_BAD_REQUEST)
     

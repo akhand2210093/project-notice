@@ -18,6 +18,7 @@ def validate_Student_digits(value):
         raise ValidationError(
             f"Student number must have 7 or 8 digits."
         )
+    
 class User(AbstractUser):
     CSE = 'CSE'
     CS = 'CS'
