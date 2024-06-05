@@ -1,5 +1,10 @@
 from pathlib import Path
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from datetime import timedelta
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-dkt!fyc6_nrp*@c5b(btdpd#w#6a8n%2r@71d+)5kb-u4thu8*'
@@ -21,7 +26,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'user',
     'notice',
-
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -90,6 +95,9 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
@@ -98,6 +106,22 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=100),
+}
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dtxbw9c1g',
+    'API_KEY': '816418654667649',
+    'API_SECRET': '8ya_7Iynbltv7GbWas4Rr7tQ304'
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+cloudinary.config(
+    cloud_name='dtxbw9c1g',
+    api_key='816418654667649',
+    api_secret='8ya_7Iynbltv7GbWas4Rr7tQ304'
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
