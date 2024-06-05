@@ -32,9 +32,9 @@ class User(AbstractUser):
     ME = 'ME'
     CIVIL = 'CIVIL'
     ROLE_CHOICES = (
-        ('administrator', 'Administrator'),
-        ('staff', 'Staff'),
-        ('student', 'Student'),
+        ('administrator', 'administrator'),
+        ('staff', 'staff'),
+        ('student', 'student'),
     )
     Branch = [
         (CSE, 'CSE'),
@@ -53,8 +53,8 @@ class User(AbstractUser):
     created = models.DateTimeField(auto_now_add=True)
     email=models.EmailField(max_length=60,validators=[validate_akgec_email], null=False, unique=True )
     role = models.CharField(max_length=15, choices=ROLE_CHOICES)
-    student_no=models.IntegerField(validators=[validate_Student_digits],unique=True, null=True)#
-    branch = models.CharField(max_length=10,null=True , choices=Branch)
-    year = models.CharField(max_length=10,null = True)
+    student_no=models.IntegerField(validators=[validate_Student_digits],unique=True,blank=True, null=True)#
+    branch = models.CharField(max_length=10, blank=True,null=True , choices=Branch)
+    year = models.CharField(max_length=10, blank=True,null = True)
     otp = models.CharField(max_length=4, blank=True, null=True)
     otp_created_at = models.DateTimeField(blank=True, null=True)
